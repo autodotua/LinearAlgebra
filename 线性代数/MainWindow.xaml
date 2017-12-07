@@ -1,0 +1,257 @@
+﻿<Window x:Class="线性代数.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        xmlns:input="clr-namespace:System.Windows.Input;assembly=PresentationCore"
+        Title="线性代数——矩阵工具" Height="700" Width="700"
+        Loaded="WinMainLoadedEventHandler" 
+        SizeToContent="WidthAndHeight"
+        Closing="WindowClosingEventHandler"
+>
+    <Grid Margin="4">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="Auto"/>
+
+        </Grid.ColumnDefinitions>
+        <GridSplitter Grid.Column="1" VerticalAlignment="Stretch"   Width="2"  Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" Margin="2,0" />
+        <GridSplitter Grid.Column="3" VerticalAlignment="Stretch"   Width="2"  Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" Margin="2,0" />
+        <GridSplitter Grid.Column="5" VerticalAlignment="Stretch"   Width="2"  Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" Margin="2,0" />
+
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="4"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <GroupBox Header="矩阵A">
+                <TextBox x:Name="txtSourceMatrixA" TextChanged="TxtSourceMatrixTextChangedEventHandler" AcceptsReturn="True" MinWidth="200" Margin="4"/>
+            </GroupBox>
+            <GroupBox Header="矩阵B" Grid.Row="2">
+
+                <TextBox x:Name="txtSourceMatrixB" TextChanged="TxtSourceMatrixTextChangedEventHandler" AcceptsReturn="True" Margin="4"/>
+            </GroupBox>
+        </Grid>
+
+
+        <GroupBox x:Name="gbxProperty" Grid.Column="2" Header="矩阵A属性">
+            <Grid Margin="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="4"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="4"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="4"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="4"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="4"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="4"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="4"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="4"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="4"/>
+                </Grid.RowDefinitions>
+                <TextBlock x:Name="txtType" Text="非矩阵" FontSize="20"/>
+                <TextBlock Text="转置矩阵" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Button x:Name="btnRowEchelonForm" Style="{StaticResource WhiteButton}" Content="行阶梯形" Grid.Row="4" Click="BtnRowEchelonFormClickEventHandler"/>
+                <Button x:Name="btnReducedRowEchelonForm" Style="{StaticResource WhiteButton}"   Content="行最简型" Grid.Row="6" Click="BtnReducedRowEchelonFormClickEventHandler"/>
+                <TextBlock Text="矩阵的秩"  Grid.Row="8" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Button x:Name="btnDeterminant" Style="{StaticResource WhiteButton}"   Content="行列式解"  Grid.Row="10" HorizontalAlignment="Center" VerticalAlignment="Center" Click="BtnDeterminantClickEventHandler"/>
+                <Button x:Name="btnPermutations" Click="BtnShowPermutationsDetailClickEventHandler" Style="{StaticResource WhiteButton}"   Content="排列相关"  Grid.Row="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Button x:Name="btnEigen" Click="BtnEigenClickEventHandler" Style="{StaticResource WhiteButton}"   Content="矩阵特征"  Grid.Row="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBox x:Name="txtTranspose"  Grid.Row="2" Grid.Column="2" MinHeight="100" MinWidth="100" AcceptsReturn="True" AcceptsTab="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" IsReadOnly="True" />
+                <TextBox x:Name="txtRowEchelonForm"  Grid.Row="4" Grid.Column="2" MinHeight="100" MinWidth="100" AcceptsReturn="True" AcceptsTab="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" IsReadOnly="True" />
+                <TextBox x:Name="txtReducedRowEchelonForm"  Grid.Row="6" Grid.Column="2" MinHeight="100" MinWidth="100" AcceptsReturn="True" AcceptsTab="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" IsReadOnly="True" />
+                <TextBox x:Name="txtRank"   Grid.Row="8" Grid.Column="2" IsReadOnly="True" />
+                <TextBox x:Name="txtDeterminant"   Grid.Row="10" Grid.Column="2" IsReadOnly="True" />
+                <TextBox x:Name="txtPermutations"   Grid.Row="12" Grid.Column="2" IsReadOnly="True" />
+                <TextBox x:Name="txtPEigen"   Grid.Row="14" Grid.Column="2" IsReadOnly="True" />
+
+            </Grid>
+
+        </GroupBox>
+
+
+
+        <GroupBox x:Name="gbxTransformation" Header="矩阵A变换" Grid.Column="4">
+            <Grid Margin="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="4"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="4"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="4"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="4"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="4"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Button x:Name="btnRowSwitching" Grid.Row="0" Click="BtnRowSwitchingClickEventHandler">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock>r</TextBlock>
+                        <TextBox x:Name="txtRowSwitchingRow1" input:InputMethod.IsInputMethodEnabled="False"  TextChanged="UniversalTxtEnterOnlyIntegerTextChangedEventHandler" FontSize="8" VerticalAlignment="Bottom">1</TextBox>
+                        <TextBlock>←→</TextBlock>
+                        <TextBlock>r</TextBlock>
+                        <TextBox x:Name="txtRowSwitchingRow2" input:InputMethod.IsInputMethodEnabled="False"  TextChanged="UniversalTxtEnterOnlyIntegerTextChangedEventHandler" FontSize="8" VerticalAlignment="Bottom">2</TextBox>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="btnRowMultiplication" Grid.Row="2" Click="BtnRowMultiplicationClickEventHandler">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox x:Name="txtRowMultiplicationMultiple" input:InputMethod.IsInputMethodEnabled="False"  TextChanged="UniversalTxtEnterOnlyNumberTextChangedEventHandler">2</TextBox>
+                        <TextBlock>r</TextBlock>
+                        <TextBox x:Name="txtRowMultiplicationRow" input:InputMethod.IsInputMethodEnabled="False"  TextChanged="UniversalTxtEnterOnlyIntegerTextChangedEventHandler" FontSize="8" VerticalAlignment="Bottom">1</TextBox>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="btnRowAddition" Grid.Row="4" Click="BtnRowAdditionClickEventHandler">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock>r</TextBlock>
+                        <TextBox x:Name="txtRowAdditionRow1" input:InputMethod.IsInputMethodEnabled="False"  TextChanged="UniversalTxtEnterOnlyIntegerTextChangedEventHandler" FontSize="8" VerticalAlignment="Bottom">1</TextBox>
+                        <TextBlock>+</TextBlock>
+                        <TextBox x:Name="txtRowAdditionMultiple" InputMethod.IsInputMethodEnabled="False"  TextChanged="UniversalTxtEnterOnlyNumberTextChangedEventHandler" Text="3"/>
+                        <TextBlock>r</TextBlock>
+                        <TextBox x:Name="txtRowAdditionRow2" input:InputMethod.IsInputMethodEnabled="False"  TextChanged="UniversalTxtEnterOnlyIntegerTextChangedEventHandler" FontSize="8" VerticalAlignment="Bottom">2</TextBox>
+
+                    </StackPanel>
+                </Button>
+
+
+
+                <Button x:Name="btnColumnSwitching" Grid.Row="6" Click="BtnColumnSwitchingClickEventHandler">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock>c</TextBlock>
+                        <TextBox x:Name="txtColumnSwitchingColumn1" input:InputMethod.IsInputMethodEnabled="False"  TextChanged="UniversalTxtEnterOnlyIntegerTextChangedEventHandler" FontSize="8" VerticalAlignment="Bottom">1</TextBox>
+                        <TextBlock>←→</TextBlock>
+                        <TextBlock>c</TextBlock>
+                        <TextBox x:Name="txtColumnSwitchingColumn2" input:InputMethod.IsInputMethodEnabled="False"  TextChanged="UniversalTxtEnterOnlyIntegerTextChangedEventHandler" FontSize="8" VerticalAlignment="Bottom">2</TextBox>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="btnColumnMultiplication" Grid.Row="8" Click="BtnColumnMultiplicationClickEventHandler">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox x:Name="txtColumnMultiplicationMultiple" input:InputMethod.IsInputMethodEnabled="False"  TextChanged="UniversalTxtEnterOnlyNumberTextChangedEventHandler">2</TextBox>
+                        <TextBlock>c</TextBlock>
+                        <TextBox x:Name="txtColumnMultiplicationColumn" input:InputMethod.IsInputMethodEnabled="False"  TextChanged="UniversalTxtEnterOnlyIntegerTextChangedEventHandler" FontSize="8" VerticalAlignment="Bottom">1</TextBox>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="btnColumnAddition" Grid.Row="10" Click="BtnColumnAdditionClickEventHandler">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock>c</TextBlock>
+                        <TextBox x:Name="txtColumnAdditionColumn1" input:InputMethod.IsInputMethodEnabled="False"  TextChanged="UniversalTxtEnterOnlyIntegerTextChangedEventHandler" FontSize="8" VerticalAlignment="Bottom">1</TextBox>
+                        <TextBlock>+</TextBlock>
+                        <TextBox x:Name="txtColumnAdditionMultiple" InputMethod.IsInputMethodEnabled="False"  TextChanged="UniversalTxtEnterOnlyNumberTextChangedEventHandler" Text="3"/>
+                        <TextBlock>c</TextBlock>
+                        <TextBox x:Name="txtColumnAdditionColumn2" input:InputMethod.IsInputMethodEnabled="False"  TextChanged="UniversalTxtEnterOnlyIntegerTextChangedEventHandler" FontSize="8" VerticalAlignment="Bottom">2</TextBox>
+
+                    </StackPanel>
+                </Button>
+
+
+
+                <TextBlock x:Name="tbkTransformationResult" Grid.Row="12"/>
+
+                <TextBox x:Name="txtTransformationResult"  Grid.Row="13" Grid.Column="2" MinHeight="100" MinWidth="100" AcceptsReturn="True" AcceptsTab="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" IsReadOnly="True" />
+
+            </Grid>
+        </GroupBox>
+
+
+        <GroupBox x:Name="gbxCalculate" Header="矩阵运算" Grid.Column="6">
+            <Grid Margin="4">
+
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="4"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="4"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="4"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="4"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="4"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="4"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Button Click="BtnMatrixAddClickEventHandler">
+                    <TextBlock>
+                    <Bold>A</Bold>+<Bold>B</Bold>
+                    </TextBlock>
+                </Button>
+
+                <Button Grid.Row="2" Click="BtnMatrixSubClickEventHandler">
+                    <TextBlock>
+                    <Bold>A</Bold>-<Bold>B</Bold>
+                    </TextBlock>
+                </Button>
+                <Button Grid.Row="4" Click="BtnMatrixMultiClickEventHandler">
+                    <TextBlock>
+                    <Bold>A</Bold>×<Bold>B</Bold>
+                    </TextBlock>
+                </Button>
+
+                <Button x:Name="btnBMultiA" Grid.Row="6" Click="BtnMatrixMultiClickEventHandler">
+                    <TextBlock>
+                    <Bold>B</Bold>×<Bold>A</Bold>
+                    </TextBlock>
+                </Button>
+
+                <Button x:Name="btnMulti" Grid.Row="8" Click="BtnMultiClickEventHandler">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox x:Name="txtMultiMultiple" input:InputMethod.IsInputMethodEnabled="False"  TextChanged="UniversalTxtEnterOnlyIntegerTextChangedEventHandler">2</TextBox>
+                        <TextBlock>
+                    <Bold>A</Bold>
+                        </TextBlock>
+                    </StackPanel>
+                </Button>
+
+
+                <Button x:Name="btnAdjointMatrix" Grid.Row="10" Click="BtnAdjointMatrixClickEventHandler">
+                    <TextBlock>
+                    <Bold>A</Bold><Run Text="*" BaselineAlignment="TextTop" FontSize="8"/>
+                    </TextBlock>
+                </Button>
+
+                <Button x:Name="btnInverse" Grid.Row="12" Click="BtnInverseClickEventHandler">
+                    <TextBlock>
+                    <Bold>A</Bold><Run Text="-1" BaselineAlignment="TextTop" FontSize="8"/>
+                    </TextBlock>
+                </Button>
+
+
+                <TextBlock x:Name="tbkCalculateResult" Grid.Row="14"/>
+                <TextBox x:Name="txtCalculateResult"  Grid.Row="15" Grid.Column="2" MinHeight="100" MinWidth="100" AcceptsReturn="True" AcceptsTab="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" IsReadOnly="True" />
+
+            </Grid>
+        </GroupBox>
+    </Grid>
+</Window>
